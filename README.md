@@ -58,9 +58,13 @@ Zero values in `RenderOptions` use library defaults: left justify, width 80, ANS
 
 ## Fonts
 
-This library reads TheDraw color font files (type 2). You need your own `.tdf` font files; place them wherever you like and pass the path to `LoadFont`.
+This library reads TheDraw color font files (type 2). Fonts are not embedded in the library, but you can copy those you want to use from the [fonts](fonts) directory.
 
 Supported characters are the 94 printable ASCII glyphs (`!` through `~`).
+
+## Acknowledgments
+
+This library is an approximate port of the C program [tdfiglet](https://github.com/tat3r/tdfiglet). In fact, this library is currently tested against the C implementation.
 
 ## License
 
