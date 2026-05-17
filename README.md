@@ -2,6 +2,8 @@
 
 A Go library for rendering large ASCII art text using [TheDraw](https://en.wikipedia.org/wiki/TheDraw) color font (`.tdf`) files.
 
+![ticcol](img/ticcol.png)
+
 ## Features
 
 - Load TheDraw FONTS (`.tdf`) color bitmap fonts
