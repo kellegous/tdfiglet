@@ -2,6 +2,7 @@ package tdfiglet
 
 import (
 	"encoding/binary"
+	"io"
 	"os"
 
 	"github.com/kellegous/poop"
@@ -40,9 +41,18 @@ type Cell struct {
 	Color uint8
 }
 
-// LoadFont reads a TheDraw FONTS (.tdf) file.
-func LoadFont(path string) (*Font, error) {
+// LoadFontFile reads a TheDraw FONTS (.tdf) file.
+func LoadFontFile(path string) (*Font, error) {
 	raw, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	return parseFont(raw)
+}
+
+// LoadFont reads a TheDraw FONTS (.tdf) file from a reader.
+func LoadFont(r io.Reader) (*Font, error) {
+	raw, err := io.ReadAll(r)
 	if err != nil {
 		return nil, err
 	}
