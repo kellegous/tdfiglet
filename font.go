@@ -120,6 +120,9 @@ func readGlyph(data []byte, offset uint16, fontHeight uint8) (*Glyph, error) {
 	}
 
 	cells := make([]Cell, width*int(fontHeight))
+	for i := range cells {
+		cells[i] = Cell{Ch: ' ', Color: 0}
+	}
 	row, col := 0, 0
 
 	for len(p) > 0 && p[0] != 0 {

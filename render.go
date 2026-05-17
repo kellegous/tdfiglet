@@ -78,6 +78,9 @@ func ibmToUTF8(ch byte) string {
 }
 
 func cellChar(ch byte, enc Encoding) string {
+	if ch < 0x20 {
+		ch = ' '
+	}
 	if enc == EncodingUnicode {
 		return ibmToUTF8(ch)
 	}
@@ -101,7 +104,11 @@ func colorReset(format ColorFormat) string {
 }
 
 func renderRow(g *Glyph, row int, opt RenderOptions, b *strings.Builder) {
-	if g == nil || row >= int(g.Height) {
+	if g == nil || g.Width == 0 {
+		return
+	}
+	rows := len(g.Cells) / int(g.Width)
+	if row >= rows {
 		return
 	}
 	var lastColor uint8
