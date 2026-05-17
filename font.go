@@ -2,9 +2,9 @@ package tdfiglet
 
 import (
 	"encoding/binary"
-	"errors"
-	"fmt"
 	"os"
+
+	"github.com/kellegous/poop"
 )
 
 const (
@@ -51,19 +51,19 @@ func LoadFont(path string) (*Font, error) {
 
 func parseFont(raw []byte) (*Font, error) {
 	if len(raw) < dataOffset {
-		return nil, errors.New("tdfiglet: font file too small")
+		return nil, poop.New("tdfiglet: font file too small")
 	}
 	if !bytesHasPrefix(raw, fontMagic) {
-		return nil, errors.New("tdfiglet: invalid font magic")
+		return nil, poop.New("tdfiglet: invalid font magic")
 	}
 
 	if raw[41] != colorFont {
-		return nil, fmt.Errorf("tdfiglet: unsupported font type %d", raw[41])
+		return nil, poop.Newf("tdfiglet: unsupported font type %d", raw[41])
 	}
 
 	nameLen := int(raw[24])
 	if 25+nameLen > len(raw) {
-		return nil, errors.New("tdfiglet: invalid font name length")
+		return nil, poop.New("tdfiglet: invalid font name length")
 	}
 
 	charOffsets := make([]uint16, NumChars)
@@ -83,7 +83,7 @@ func parseFont(raw []byte) (*Font, error) {
 		}
 		off := int(charOffsets[i])
 		if off+2 > len(data) {
-			return nil, fmt.Errorf("tdfiglet: glyph %q out of range", asciiCharSet[i])
+			return nil, poop.Newf("tdfiglet: glyph %q out of range", asciiCharSet[i])
 		}
 		if int(data[off+1]) > int(f.Height) {
 			f.Height = data[off+1]
@@ -107,7 +107,7 @@ func parseFont(raw []byte) (*Font, error) {
 func readGlyph(data []byte, offset uint16, fontHeight uint8) (*Glyph, error) {
 	base := int(offset)
 	if base+2 > len(data) {
-		return nil, errors.New("tdfiglet: truncated glyph header")
+		return nil, poop.New("tdfiglet: truncated glyph header")
 	}
 
 	p := data[base:]
