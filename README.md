@@ -15,45 +15,51 @@ A Go library for rendering large ASCII art text using [TheDraw](https://en.wikip
 ## Installation
 
 ```bash
-go get github.com/kellegous/tdfiglet
+go get github.com/kellegous/tdfiglet@latest
 ```
 
 ## Usage
 
 Load a font by path and render text with default options (left-aligned, 80 columns, ANSI colors, Unicode encoding):
 
-```go
-package main
+[example]: # "example_test.go:ExampleLoadFontFile"
 
+```go
 import (
 	"fmt"
-	"os"
-
+	"log"
 	"github.com/kellegous/tdfiglet"
 )
 
-func main() {
-	font, err := tdfiglet.LoadFont("fonts/brndamgx.tdf")
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-
-	fmt.Print(font.Render("hello"))
+font, err := tdfiglet.LoadFontFile("fonts/brndamgx.tdf")
+if err != nil {
+	log.Fatal(err)
 }
+fmt.Println(font.Render("hello"))
 ```
 
 ### Render options
 
 Use `RenderWith` to control layout, colors, and encoding:
 
+[example]: # "example_test.go:ExampleFont_RenderWith"
+
 ```go
-out := font.RenderWith("hello", tdfiglet.RenderOptions{
-	Justify:  tdfiglet.JustifyCenter,
-	Width:    80,
-	Color:    tdfiglet.ColorANSI,   // or tdfiglet.ColorMIRC
-	Encoding: tdfiglet.EncodingUnicode, // or tdfiglet.EncodingASCII
-})
+import (
+	"fmt"
+	"log"
+	"github.com/kellegous/tdfiglet"
+)
+
+font, err := tdfiglet.LoadFontFile("fonts/brndamgx.tdf")
+if err != nil {
+	log.Fatal(err)
+}
+fmt.Println(font.RenderWith("hello", tdfiglet.RenderOptions{
+	Justify: tdfiglet.JustifyCenter,
+	Width:   80,
+	Color:   tdfiglet.ColorANSI,
+}))
 ```
 
 Zero values in `RenderOptions` use library defaults: left justify, width 80, ANSI color, Unicode encoding.
